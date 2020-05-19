@@ -32,8 +32,8 @@ kpdetector = cv2.xfeatures2d.SIFT_create()
 # create BFMatcher object
 bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=True)
 
-min_num = total_frame // 2
-frame_num = min_num
+middle_num = total_frame // 2
+frame_num = middle_num
 next_num = 1
 while frame_num >= 0 and frame_num < total_frame:
     cv2.setTrackbarPos('frame no.','matching',frame_num)
@@ -45,7 +45,7 @@ while frame_num >= 0 and frame_num < total_frame:
     gray = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
     kp2 = kpdetector.detect(gray,None)
     dt2 = kpdetector.compute(gray,kp2)[1]
-    if frame_num == min_num:
+    if frame_num == middle_num:
         T      = np.eye(3)
         T[0,2] = (result.shape[1]-frame2.shape[1]) / 2 - 10
         T[1,2] = 0
@@ -98,7 +98,7 @@ while frame_num >= 0 and frame_num < total_frame:
         cv2.imshow('matching',cv2.drawMatches(frame2,kp2,frame1,kp1,matches[:15], None, flags=cv2.DRAW_MATCHES_FLAGS_NOT_DRAW_SINGLE_POINTS))
         
         out.write(disp.astype(np.uint8))
-        
+
         frame1 = frame2
         kp1 = kp2
         dt1 = dt2
